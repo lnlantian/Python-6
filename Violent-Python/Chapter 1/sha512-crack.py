@@ -1,4 +1,5 @@
 import crypt
+
 def testPass(cryptPass):
 	salt = cryptPass[0:11]
 	print "[+] Salt: " + salt
