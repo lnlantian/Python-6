@@ -14,7 +14,6 @@ execute = ""
 target = ""
 upload_destination = ""
 port = 0
-
 def usage ():
     print "BHP Net Tool"
     print
@@ -34,7 +33,6 @@ def usage ():
 
 def client_sender(buffer):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
     try:
         # connect to our target host
         client.connect((target,port))
@@ -51,40 +49,32 @@ def client_sender(buffer):
                 data = client.recv(4096)          
                 recv_len = len(data)
                 response += data
-            
                 if recv_len < 4096:
                     break
             print response,
-        
             # wait for more input
             buffer = raw_input("")
             buffer += "\n"
-        
             # send it off
             client.send(buffer)
-    
     except:
         print "[*] Exception! Exiting."
         
         # tear down the connection
         client.close()
         
-
 def server_loop():
     global target
-    global port
-    
+    global port 
     # if no target is defined, we listen on all interfaces
     if not len(target):
         target = "0.0.0.0"
-    
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((target, port))
     server.listen(5)
     
     while True:
         client_socket, addr = server.accept()
-        
         # spin off a new thread to handle the client
         client_thread = threading.Thread(target=client_handler, args=(client_socket,))
         client_thread.start()
@@ -92,13 +82,11 @@ def server_loop():
 def run_command(command):
     # trim the newline
     command = command.rstrip()
-    
     # run the command and get the output back
     try:
         output = subprocess.check_output(command,stderr=subprocess.STDOUT,shell=True)
     except:
-        output = "[-] Failed to execute command\r\n"
-        
+        output = "[-] Failed to execute command\r\n" 
     # send the output back to the client
     return output
 
@@ -106,12 +94,10 @@ def client_handler(client_socket):
     global upload
     global execute
     global command
-    
     # check for upload
     if len(upload_destination):
         
         # read in all the bytes of the file and write to our destination
-        
         file_buffer = ""
         
         # keep reading data until none is available
