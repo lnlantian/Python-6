@@ -15,5 +15,4 @@ def ssh_command(ip, user, passwd, command):
         ssh_session.exec_command(command)
         print ssh_session.recv(1024)
     return
-
 ssh_command('127.0.0.1', 'username', 'password', 'id')
